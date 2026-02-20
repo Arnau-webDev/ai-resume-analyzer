@@ -232,23 +232,35 @@ export const prepareInstructions = ({
   jobTitle: string;
   jobDescription: string;
 }) =>
-  `You are a strict, no-nonsense ATS (Applicant Tracking System) and resume analyst.
+  `You are an experienced ATS (Applicant Tracking System) and resume analyst. Be honest and constructive.
 
-  CRITICAL CONTEXT: The resume text below was extracted programmatically from a PDF, exactly as an ATS would parse it.
-  If the text appears jumbled, has broken words (e.g. "T E C H N I C A L"), inconsistent spacing, missing sections,
-  or is poorly structured, this means a real ATS would also fail to parse it correctly.
-  These formatting issues should HEAVILY penalize the ATS score (a badly parsed resume should score below 40 on ATS).
+  CONTEXT: The resume text below was extracted programmatically from a PDF, simulating how an ATS parses resumes.
 
-  SCORING GUIDELINES - Be harsh and realistic:
-  - 0-30: Severely broken, ATS cannot parse it, major issues throughout
-  - 31-50: Significant problems, many areas need rework
-  - 51-70: Decent but notable issues that need fixing
-  - 71-85: Good with minor improvements needed
-  - 86-100: Excellent, only reserved for near-perfect resumes
+  ATS PARSING ASSESSMENT - Evaluate the extracted text for these issues:
 
-  Most resumes should score between 40-70. Scores above 80 should be rare.
-  Do NOT inflate scores to be polite. Low scores help the user improve.
-  A resume with formatting artifacts, broken text, or poor structure should never score above 50 on ATS.
+  MINOR issues (small penalty): Skills or secondary sections appearing slightly out of order due to multi-column layouts.
+  These are cosmetic and most ATS systems handle them.
+
+  MAJOR issues (heavy penalty — each should lower ATS score by 10-15 points):
+  - Spaced-out letters in words (e.g. "T E C H N I C A L" instead of "TECHNICAL") — ATS cannot match keywords
+  - Job descriptions/bullets SEPARATED from their company name and dates — ATS cannot associate experience correctly
+  - Sidebar content (contact info, intro) injected in the middle of work experience — ATS misreads section boundaries
+  - Dates appearing as a disconnected block rather than next to their respective roles
+  - Garbled, unreadable, or fundamentally disordered text
+
+  These major issues reflect real ATS failures. A resume with 2+ major issues should score below 50 on ATS
+  regardless of how good the actual content is, because ATS cannot parse it properly.
+
+  SCORING GUIDELINES - Be honest and accurate:
+  - 0-30: Severely broken, ATS cannot parse it at all
+  - 31-50: Multiple major structural/formatting problems causing real ATS parsing failures
+  - 51-65: Parseable but has some structural issues, weak keyword alignment, or notable gaps
+  - 66-80: Good resume with clear structure, decent keyword match, room for improvement
+  - 81-90: Strong resume, well-structured, strong keyword alignment with minor gaps
+  - 91-100: Near-perfect match — reserved for resumes precisely tailored to the role
+
+  IMPORTANT: Do NOT inflate scores. A visually attractive resume with broken text extraction is still a BAD ATS resume.
+  Score based on how well the extracted text can be parsed, not what you think the original looked like.
 
   Analyze this resume for the following role:
   Job title: ${jobTitle}
