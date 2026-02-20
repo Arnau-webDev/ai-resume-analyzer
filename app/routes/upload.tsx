@@ -57,7 +57,7 @@ const Upload = () => {
       feedback: ''
     }
 
-    await kv.set(`resume: ${uuid}`, JSON.stringify(data));
+    await kv.set(`resume:${uuid}`, JSON.stringify(data));
     setStatusText('Extracting resume text...');
 
     const resumeText = await extractTextFromPdf(file);
