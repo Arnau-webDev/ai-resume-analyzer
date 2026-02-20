@@ -73,9 +73,7 @@ const Resume = () => {
                     <h2 className="text-xl text-black font-bold">Resume Review</h2>
                     {feedback ? (
                         <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
-                            <Summary />
-                            <ATS  />
-                            <Details />
+                            <Summary feedback={feedback} />
 
 
                         </div>
