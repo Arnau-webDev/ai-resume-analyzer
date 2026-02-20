@@ -32,7 +32,7 @@ interface PuterStore {
       options?: PuterChatOptions
     ) => Promise<AIResponse | undefined>;
     feedback: (
-      path: string,
+      resumeText: string,
       message: string
     ) => Promise<AIResponse | undefined>;
     img2txt: (
@@ -307,7 +307,7 @@ export const usePuterStore = create<PuterStore>()(
         >;
       };
 
-      const feedback = async (path: string, message: string) => {
+      const feedback = async (resumeText: string, message: string) => {
         const puter = getPuter();
         if (!puter) {
           setError("Puter.js not available", "ai/feedback/error");
@@ -315,21 +315,7 @@ export const usePuterStore = create<PuterStore>()(
         }
 
         return puter.ai.chat(
-          [
-            {
-              role: "user",
-              content: [
-                {
-                  type: "file",
-                  puter_path: path,
-                },
-                {
-                  type: "text",
-                  text: message,
-                },
-              ],
-            },
-          ],
+          `Here is the resume content:\n\n${resumeText}\n\n${message}`,
           { model: "openai/gpt-5.2-chat" }
         ) as Promise<AIResponse | undefined>;
       };

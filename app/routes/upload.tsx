@@ -4,7 +4,7 @@ import FileUploader from "~/components/FileUploader";
 import Navbar from "~/components/Navbar";
 import { prepareInstructions } from "~/constants";
 import { usePuterStore } from "~/stores/puter";
-import { convertPdfToImage } from "~/utils/pdf2img";
+import { convertPdfToImage, extractTextFromPdf } from "~/utils/pdf2img";
 
 interface AnalyzeFormDataInput {
   companyName: string,
@@ -32,6 +32,7 @@ const Upload = () => {
 
     const uploadedFile = await fs.upload([file]);
 
+    console.log("🚀 ~ handleAnalyze ~ uploadedFile:", uploadedFile)
     if(!uploadedFile) return setStatusText('Error: Failed to upload file');
 
     setStatusText('Converting to image...');
@@ -59,9 +60,14 @@ const Upload = () => {
     }
 
     await kv.set(`resume: ${uuid}`, JSON.stringify(data));
+    setStatusText('Extracting resume text...');
+
+    const resumeText = await extractTextFromPdf(file);
+    if(!resumeText) return setStatusText('Error: Failed to extract text from PDF');
+
     setStatusText('Analyzing...');
 
-    const feedback = await ai.feedback(uploadedFile.path, prepareInstructions({jobTitle, jobDescription}));
+    const feedback = await ai.feedback(resumeText, prepareInstructions({jobTitle, jobDescription}));
 
     if(!feedback) return setStatusText('Error: Failed to analyze resume');
 
