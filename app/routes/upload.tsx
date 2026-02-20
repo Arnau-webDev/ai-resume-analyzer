@@ -32,12 +32,10 @@ const Upload = () => {
 
     const uploadedFile = await fs.upload([file]);
 
-    console.log("🚀 ~ handleAnalyze ~ uploadedFile:", uploadedFile)
     if(!uploadedFile) return setStatusText('Error: Failed to upload file');
 
     setStatusText('Converting to image...');
     const imageFile = await convertPdfToImage(file);
-    console.log('imageFile', imageFile);
 
     if(!imageFile.file) return setStatusText('Failed to convert PDF to image');
 
@@ -76,7 +74,6 @@ const Upload = () => {
     data.feedback = JSON.parse(feedbackText);
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
     setStatusText('Analysis complete, redirecting...');
-    console.log(data);
 
     navigate(`/resume/${uuid}`);
   }
