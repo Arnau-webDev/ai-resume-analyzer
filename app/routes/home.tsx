@@ -33,7 +33,6 @@ export default function Home() {
       ))
 
       setResumes(parsedResumes || []);
-      console.log("🚀 ~ loadResumes ~ parsedResumes:", parsedResumes)
       setLoadingResumes(false);
     }
 
