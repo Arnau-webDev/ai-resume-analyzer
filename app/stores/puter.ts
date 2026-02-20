@@ -330,7 +330,7 @@ export const usePuterStore = create<PuterStore>()(
               ],
             },
           ],
-          { model: "claude-sonnet-4" }
+          { model: "openai/gpt-5.2" }
         ) as Promise<AIResponse | undefined>;
       };
 
